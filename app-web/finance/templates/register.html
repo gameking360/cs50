@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <form method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus id="nome" class="form-control" name="username" placeholder="Username" type="text">
+        </div>
+        <div class="form-group">
+            <input class="form-control" autocomplete="off" id="senha" name="password" placeholder="Password" type="password">
+        </div>
+        <div class="form-group">
+            <input class="form-control" id="confirmacao" name="confirmation"  placeholder="Confirm password" type="password">
+        </div>
+        <button class="btn btn-primary" type="submit" >Register count</button>
+    </form>
+
+    <script defer>
+        formulario = document.querySelector("form")
+
+
+
+        function validar(){
+            if(document.querySelector("#nome").value == ""){
+            alert("Insira um nome de usuário")
+            return false
+        }
+        if(document.querySelector("#senha").value =="" || document.querySelector("#confirmacao").value == ""){
+            alert("Insira uma senha em ambos os campos")
+            return false
+        }
+
+        if(document.querySelector("#senha").value != document.querySelector("#confirmacao").value ){
+            alert("As senhas devem coincidir")
+            return false
+        }
+
+        formulario.action = "/register"
+        return true
+
+        }
+
+
+
+    </script>
+{% endblock %}

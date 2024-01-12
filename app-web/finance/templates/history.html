@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+
+{% block title %}
+
+    Histórico
+
+{% endblock %}
+
+{% block main %}
+
+{% if historico | length == 0 %}
+
+    <h3>Realize uma operação para que ela apareça aqui</h3>
+
+{% else %}
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Cust</th>
+        <th scope="col">Date</th>
+        <th scope="col">Type</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for acao in historico %}
+        <tr>
+            <th scope="col">{{acao["action"]}}</th>
+            <th scope="col">{{acao["qtd"]}}</th>
+            <th scope="col">R${{acao["price"]}}</th>
+            <th scope="col">{{acao["date"]}}</th>
+            <th scope="col">{{acao["type_action"]}}</th>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+
+{% endif %}
+{% endblock %}

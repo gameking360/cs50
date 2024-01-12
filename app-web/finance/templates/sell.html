@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block title %}
+
+   Venda
+
+{% endblock %}
+
+{% block main %}
+
+{% if acoes | length == 0 %}
+
+    <h2>Você não possui ações para vender</h2>
+{% else %}
+    <form action="/sell" method="POST">
+        <div class="form-group">
+            <select id="seletor" name = "symbol">
+                <option disabled selected value="">Choose a action</option>
+                {% for action in acoes %}
+                <option value="{{ action["name"] }}">{{action["name"]}} - Qtd: {{action["max"]}} </option>
+                {% endfor %}
+            </select>
+
+        </div>
+
+        <div class="form-group" id="qt" >
+        </div>
+
+
+    <div class="card w-75 mb-3" id='acao'>
+
+    </div>
+    </form>
+{% endif %}
+<script>
+
+var  acoesJS= {{acoes | tojson | safe}}
+
+
+        document.addEventListener("DOMContentLoaded", function (){
+        document.querySelector("#seletor").addEventListener("change",function (){
+            var varAcao = document.querySelector("#seletor").value
+
+            if(acoesJS.some(item => item["name"] == varAcao))
+            {
+                document.querySelector("#qt").innerHTML = `<input type="number" id="qtd" class="form-control" placeholder= "Quantidade" name = "shares">
+                <button type="submit" class="btn btn-primary"> Vender </button>`
+                document.querySelector("#qtd").addEventListener("change", function(){
+                if(document.querySelector("#qtd").value <= 0 ){
+                    alert("Você deve vender pelo menos 1 ação")
+                    document.querySelector("#qtd").value = 1
+                    return false
+                }
+
+                 if(acoesJS.some(item => item["name"] == varAcao && item["max"] < document.querySelector("#qtd").value)){
+                    alert("Você não deve vender mais ações do que tem")
+                    document.querySelector("#qtd").value = 1
+                    return false
+
+                }
+    })
+            }
+            else{
+                document.querySelector("#qt").innerHTML = "";
+            }
+
+        })
+
+
+})
+
+</script>
+{% endblock %}
+

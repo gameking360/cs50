@@ -1,0 +1,5 @@
+cs50
+Flask
+Flask-Session
+requests
+pk_d4cb3d661b4c4b0ea88b7698e8af6d8b

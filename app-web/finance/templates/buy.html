@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+
+{% block title %}
+
+   Compra
+
+{% endblock %}
+
+{% block main %}
+
+<form action="/buy" method="POST">
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Simbolo" id="simbolo" name="symbol">
+
+    </div>
+    <div class="form-group" id="qt" style="visibility:hidden">
+        <input type="number" id="qtd" class="form-control" placeholder= "Qtd" name = "shares">
+    </div>
+
+    <button type="button"class="btn btn-primary" id="valida" >Search</button>
+
+<div class="card w-75 mb-3" id='acao'>
+
+</div>
+</form>
+
+<script defer>
+
+precoFinal = 0
+let lok
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector("#valida").addEventListener('click', function() {
+        if (document.querySelector("#simbolo").value == "") {
+            alert("Insira um valor para o símbolo");
+            return false;
+        }
+        fetch(`/validate?symbol=${document.querySelector("#simbolo").value}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data == null) {
+                    alert("Insira um símbolo válido");
+                } else {
+                    document.querySelector("#acao").innerHTML = `<div class="card-body">
+                        <h5 class="card-title">${data['name']}</h5>
+                        <p class="card-text">Price: R$${data['price']} | Total: R$<input type="text" name="finalPrice" value = "${precoFinal}" readonly id="final"> </p>
+                        <input type="hidden" name="finalPrice" value =""> </input>
+                        <button type="submit" class="btn btn-primary">Comprar</button>
+                    </div>`;
+                    document.querySelector("#qt").style.visibility = "visible";
+                    lok = data
+
+                }
+            })
+            .catch(error => {
+                alert("Insira um simbolo válido")
+                console.error('Error:', error);
+            });
+    });
+});
+
+document.querySelector("#qtd").addEventListener("change", function() {
+    if(document.querySelector("#qtd").value  < 0) {
+        alert("Você não pode comprar ações negativas")
+        document.querySelector("#qtd").value = 0
+    }
+    else
+    precoFinal = document.querySelector("#qtd").value * lok['price']
+    document.querySelector("#final").value = precoFinal
+    console.log(precoFinal)
+})
+
+</script>
+{% endblock %}
+

@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %}
+
+    Inicio
+
+{% endblock %}
+
+{% block main %}
+
+<dl class="row">
+    <dt class="col-sm-3">Name:</dt>
+    <dd class="col-sm-9">{{user["name"]}}</dd>
+
+    <dt class="col-sm-3">Money:</dt>
+    <dd class="col-sm-9">{{user["money"]}} </dd>
+
+    <dt class="col-sm-3">Account Money:</dt>
+    <dd class="col-sm-9">{{user["Total"]}}</dd>
+
+  </dl>
+
+
+    {% if actions|length == 0 %}
+        <h1>Nenhuma ação foi comprada ainda</h1>
+
+    {% else %}
+
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Actual Price</th>
+            <th scope="col">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for action in actions %}
+            <tr>
+                <th scope="col">{{action["actionName"]}}</th>
+                <th scope="col">{{action["qtdAction"]}}</th>
+                <th scope="col">R${{action["precoAgora"]}}</th>
+                <th scope="col">R${{action["Total"]}}</th>
+            </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+
+{% endblock %}
